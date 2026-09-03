@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "flash.h"
+#include "jmp.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,7 +45,12 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+uint32_t address = 0x08008000;
+// test vars
+uint32_t add = 0x0802C000;
+uint32_t d = 0x2A3B2A3B;
+uint8_t sec1 = 4;
+uint8_t sec2 = 7;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,6 +97,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  testFlash(sec1, sec2, add, d); // looked at the address to see if it actually wrote value to flash (passed)
+  jumpToApp(address);
 
   /* USER CODE END 2 */
 
