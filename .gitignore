@@ -9,3 +9,4 @@ Release/
 *.map
 .metadata/
 **/.settings/
+*.launch
