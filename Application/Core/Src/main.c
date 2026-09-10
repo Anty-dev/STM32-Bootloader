@@ -98,6 +98,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
 
+  //RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+  //PWR->CR |= PWR_CR_DBP;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,8 +110,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-
-  }
   /* USER CODE END 3 */
 }
 

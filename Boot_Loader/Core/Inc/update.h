@@ -16,7 +16,7 @@ typedef struct {
 
 	uint32_t exp_crc;
 	uint32_t size;
-	uint8_t* buffer;
+	uint8_t buffer[512];
 	uint8_t sec_start; // probably should hard code the sector erase indexes
 	uint8_t sec_end;
 

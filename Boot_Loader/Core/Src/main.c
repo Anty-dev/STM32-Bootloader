@@ -101,10 +101,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_UART_Receive_IT(&huart2, packet->buffer, 8);
 
   //testFlash(sec1, sec2, add, d); // looked at the address to see if it actually wrote value to flash (passed)
   updateReady(&packet); // check if there is a update pending
-  jumpToApp(*(volatile uint32_t*)switchBanks());
+  jumpToApp(activeBank());
 
   /* USER CODE END 2 */
 

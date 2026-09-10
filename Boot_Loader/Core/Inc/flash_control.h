@@ -29,6 +29,7 @@ typedef struct {
 
 uint8_t valid_address(uint32_t addr, uint32_t size);
 uint8_t valid_sector(uint8_t sec);
-uint32_t switchBanks(void);
+uint32_t activeBank(void);
+void switchBank(void);
 
 #endif /* INC_FLASH_CONTROL_H_ */

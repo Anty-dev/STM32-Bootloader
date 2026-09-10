@@ -7,12 +7,19 @@
 #include "update.h"
 #include "flash.h"
 #include "flash_control.h"
+#include "crc32.h"
 
 
 uint8_t updateApp(UART_Packet *pac) {
 	RTC->BKP1R = 0;
-	// parse the header from the data
+	// change the bank (write to inactive one)
+	switchBank();
+	uint32_t addr = activeBank();
 
+	// parse the header from the data (first 4 is size, second 4 is crc)
+	for (int i = 0; i < 4;i++) {
+		//pac->size |= HAL_UART_Receive();
+	}
 
 	// delete sectors (evenutally loop this)
 	eraseFlash(2);
@@ -21,7 +28,9 @@ uint8_t updateApp(UART_Packet *pac) {
 	eraseFlash(5);
 
 	// write the data from uart to actual flash
-
+	for (int i = 0; i < pac->size; i++) {
+		writeFlash(addr, (uint32_t)pac->buffer[i]);
+	}
 
 	//verify, if it passes then switch to the other flash bank
 }
@@ -41,6 +50,6 @@ if (RTC->BKP1R == 1) {
 	update = 1;
 }
 if (update == 1) {
-	updateApp(&pac);
+	updateApp(pac);
 }
 }

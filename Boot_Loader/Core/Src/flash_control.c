@@ -35,8 +35,17 @@ uint8_t valid_address(uint32_t addr, uint32_t size) {
 	}
 	return 0;
 }
+// backup register 0 indicates what bank we are in
+void switchBank(void) {
+	if (RTC->BKP0R == 0) {
+		RTC->BKP0R = 1;
+	}
+	else {
+		RTC->BKP0R = 0;
+	}
+}
 
-uint32_t switchBanks(void) {
+uint32_t activeBank(void) {
 	RCC->APB1ENR |= RCC_APB1ENR_PWREN;
 	PWR->CR |= PWR_CR_DBP;
 
