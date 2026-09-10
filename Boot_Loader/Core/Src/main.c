@@ -18,11 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "flash.h"
-#include "jmp.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "flash.h"
+#include "jmp.h"
+#include "update.h"
+#include "flash_control.h"
 
 /* USER CODE END Includes */
 
@@ -51,6 +53,8 @@ uint32_t add = 0x0802C000;
 uint32_t d = 0x2A3B2A3B;
 uint8_t sec1 = 4;
 uint8_t sec2 = 7;
+
+UART_Packet packet;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,8 +102,9 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  testFlash(sec1, sec2, add, d); // looked at the address to see if it actually wrote value to flash (passed)
-  jumpToApp(address);
+  //testFlash(sec1, sec2, add, d); // looked at the address to see if it actually wrote value to flash (passed)
+  updateReady(&packet); // check if there is a update pending
+  jumpToApp(*(volatile uint32_t*)switchBanks());
 
   /* USER CODE END 2 */
 

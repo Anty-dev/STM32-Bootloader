@@ -6,6 +6,7 @@
  */
 
 #include "flash.h"
+#include "flash_control.h"
 
 int isFlashLocked = 1;
 
@@ -26,9 +27,10 @@ void lockFlash(void) {
 
 
 void eraseFlash(uint8_t sector) {
+	if (valid_sector(sector)) {
+
 	// Note: must unlock flash control register before modifying it
-	while (FLASH->SR & FLASH_SR_BSY){
-	}
+	while (FLASH->SR & FLASH_SR_BSY){ }
 
 	FLASH->CR |= FLASH_CR_SER;
 	FLASH->CR &= ~(FLASH_CR_SNB);
@@ -38,6 +40,7 @@ void eraseFlash(uint8_t sector) {
 
 	while (FLASH->SR & FLASH_SR_BSY){ }
 	FLASH->CR &= ~(FLASH_CR_SER);
+	}// end of if
 	}
 
 // inclusive of jth sector
@@ -59,6 +62,7 @@ void eraseSectors(uint8_t i, uint8_t j) {
 		FLASH->CR &= ~(FLASH_CR_SER);
 }
 
+//leave length out for now
 void writeFlash(uint32_t address, uint32_t data) {
 
 	while (FLASH->SR & FLASH_SR_BSY){ }
