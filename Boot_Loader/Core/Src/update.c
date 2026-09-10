@@ -16,23 +16,27 @@ uint8_t updateApp(UART_Packet *pac) {
 	switchBank();
 	uint32_t addr = activeBank();
 
-	// parse the header from the data (first 4 is size, second 4 is crc)
-	for (int i = 0; i < 4;i++) {
-		//pac->size |= HAL_UART_Receive();
-	}
+	// delete sectors
+		if (addr == BANK_A) {
+			eraseSectors(2, 5);
+		}else {
+			eraseSectors(6, 7);
+		}
 
-	// delete sectors (evenutally loop this)
-	eraseFlash(2);
-	eraseFlash(3);
-	eraseFlash(4);
-	eraseFlash(5);
+		// figure out how uart adds info into our buffer probably interrupt based to not to block the cpu
+
+	// parse the header from the data (first 4 is size, second 4 is crc)
+
+
 
 	// write the data from uart to actual flash
-	for (int i = 0; i < pac->size; i++) {
-		writeFlash(addr, (uint32_t)pac->buffer[i]);
-	}
+
 
 	//verify, if it passes then switch to the other flash bank
+	if (crc32((uint8_t*) addr, pac->size) != pac->exp_crc) {
+		switchBank();
+		// update is corrupted do some telemetry or something
+	}
 }
 
 void updateReady(UART_Packet *pac) {
